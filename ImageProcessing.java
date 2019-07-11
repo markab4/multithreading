@@ -21,7 +21,7 @@ public class ImageProcessing {
                 BufferedImage.TYPE_INT_RGB);
 
 
-        // HOW LONG THREADED PROCESS TAKES
+        // Latency of each threaded process
 
         // single-threaded process = 1080 ms
         // multi-threaded process with 1 thread = 1157 ms
