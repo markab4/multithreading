@@ -97,7 +97,7 @@ public class HackersAttemptingToCrackVault {
                }
                System.out.println("Counting down: " + i + " seconds left");
            }
-           System.out.println("Game over!");
+           System.out.println("Game over! The cops are on the scene!");
            System.exit(0);
        }
    }

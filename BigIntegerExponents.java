@@ -2,7 +2,7 @@
 
 import java.math.BigInteger;
 
-public class BigIntegerMultiplication {
+public class BigIntegerExponents {
    public static void main(String[] args) {
        Thread thread = new Thread(new LongComputationTask(new BigInteger("20000"), new BigInteger("100000")));
        thread.start();
