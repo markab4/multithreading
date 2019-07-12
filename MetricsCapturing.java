@@ -19,6 +19,7 @@ public class MetricsCapturing {
     public static class MetricsPrinter extends Thread {
         private Metrics metrics;
 
+
         public MetricsPrinter(Metrics metrics) {
             this.metrics = metrics;
         }
