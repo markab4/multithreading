@@ -47,7 +47,7 @@ public class SearchAndCountWordHttpServer {
             String[] keyValue = query.split("=");
             String action = keyValue[0];
             String word = keyValue[1];
-            if(!action.equals("word")) {
+            if (!action.equals("word")) {
                 exchange.sendResponseHeaders(400, 0);
                 return;
             }
@@ -63,9 +63,9 @@ public class SearchAndCountWordHttpServer {
         private long countWord(String word) {
             long count = 0;
             int index = 0;
-            while(index >=0) {
+            while (index >= 0) {
                 index = text.indexOf(word, index);
-                if(index >=0){
+                if (index >= 0) {
                     count++;
                     index++;
                 }

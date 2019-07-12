@@ -45,16 +45,16 @@ public class ImageProcessing {
         System.out.println(duration);
     }
 
-    public static void recolorSingleThreaded(BufferedImage originalImage, BufferedImage resultImage){
+    public static void recolorSingleThreaded(BufferedImage originalImage, BufferedImage resultImage) {
         recolorImage(originalImage, resultImage, 0, 0, originalImage.getWidth(), originalImage.getHeight());
     }
 
-    public static void recolorMultithreaded(BufferedImage originalImage, BufferedImage resultImage, int numberOfThreads){
+    public static void recolorMultithreaded(BufferedImage originalImage, BufferedImage resultImage, int numberOfThreads) {
         List<Thread> threads = new ArrayList<>();
         int width = originalImage.getWidth();
         int height = originalImage.getHeight() / numberOfThreads;
 
-        for(int i = 0; i < numberOfThreads; i++) {
+        for (int i = 0; i < numberOfThreads; i++) {
             final int threadMultiplier = i;
 
             Thread thread = new Thread(() -> {
@@ -67,10 +67,10 @@ public class ImageProcessing {
             threads.add(thread);
         }
 
-        for(Thread thread : threads) {
+        for (Thread thread : threads) {
             thread.start();
         }
-        for(Thread thread : threads) {
+        for (Thread thread : threads) {
             try {
                 thread.join();
             } catch (InterruptedException e) {
@@ -80,15 +80,15 @@ public class ImageProcessing {
     }
 
     public static void recolorImage(BufferedImage originalImage, BufferedImage resultImage, int leftCorner, int topCorner,
-                                    int width, int height){
-        for(int x = leftCorner; x < leftCorner + width && x < originalImage.getWidth(); x++) {
-            for(int y = topCorner; y < topCorner + height && y<originalImage.getHeight(); y++){
+                                    int width, int height) {
+        for (int x = leftCorner; x < leftCorner + width && x < originalImage.getWidth(); x++) {
+            for (int y = topCorner; y < topCorner + height && y < originalImage.getHeight(); y++) {
                 recolorPixel(originalImage, resultImage, x, y);
             }
         }
     }
 
-    public static void recolorPixel(BufferedImage originalImage, BufferedImage resultImage, int x, int y){
+    public static void recolorPixel(BufferedImage originalImage, BufferedImage resultImage, int x, int y) {
 
         int rgb = originalImage.getRGB(x, y),
                 red = getRed(rgb),
@@ -99,7 +99,7 @@ public class ImageProcessing {
                 newBlue;
 
         // purple is a combination of red and blue, so we decrease amount of green
-        if(isShadeOfGray(red, green, blue)) {       // our target values are shades of grey
+        if (isShadeOfGray(red, green, blue)) {       // our target values are shades of grey
             newRed = Math.min(255, red + 10);
             newGreen = Math.max(0, green - 80);
             newBlue = Math.max(0, blue - 20);
@@ -119,14 +119,14 @@ public class ImageProcessing {
 
     //checking that all three components have a similar color intensity,
     // ie if no one particular component is stronger than the rest.
-    public static boolean isShadeOfGray(int red, int green, int blue){
+    public static boolean isShadeOfGray(int red, int green, int blue) {
         // if the color is almost a perfect mix of green red and blue, it's a shade of gray.
-        return  Math.abs(red - green) < 30 &&
+        return Math.abs(red - green) < 30 &&
                 Math.abs(red - blue) < 30 &&
                 Math.abs(green - blue) < 30;
     }
 
-    public static int createRGBFromColors(int red, int green, int blue){
+    public static int createRGBFromColors(int red, int green, int blue) {
         int rgb = 0;
         rgb |= blue;
         rgb |= green << 8;
