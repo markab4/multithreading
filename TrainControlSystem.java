@@ -20,7 +20,7 @@ public class TrainControlSystem {
 
         @Override
         public void run() {
-            while(true){
+            while (true) {
                 // wait for random amount of time for train to come
                 long sleepingTime = random.nextInt(5);
                 try {
@@ -32,6 +32,7 @@ public class TrainControlSystem {
             }
         }
     }
+
     public static class TrainB implements Runnable {
         private Intersection intersection;
         private Random random = new Random();
@@ -42,7 +43,7 @@ public class TrainControlSystem {
 
         @Override
         public void run() {
-            while(true){
+            while (true) {
                 // wait for random amount of time for train to come
                 long sleepingTime = random.nextInt(5);
                 try {
@@ -60,18 +61,22 @@ public class TrainControlSystem {
         private Object roadB = new Object();
 
         public void takeRoadA() {
-            synchronized(roadA) {
+            synchronized (roadA) {
                 System.out.println("Road A is locked by thread " + Thread.currentThread().getName());
 
                 synchronized (roadB) {
                     System.out.println("Train is passing through road A");
-                    try { Thread.sleep(1); }
-                    catch (InterruptedException e) { e.printStackTrace(); }
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+
         public void takeRoadB() {
-            synchronized(roadA) {
+            synchronized (roadA) {
                 System.out.println("Road B is locked by thread " + Thread.currentThread().getName());
 
                 synchronized (roadB) {
