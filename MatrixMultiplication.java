@@ -9,8 +9,8 @@ import java.util.StringJoiner;
 
 public class MatrixMultiplication {
     private static final int N = 10;
-    private static final String INPUT_FILE="./out/matrices";
-    private static final String OUTPUT_FILE="./out/matrices_results.txt";
+    private static final String INPUT_FILE = "./out/matrices";
+    private static final String OUTPUT_FILE = "./out/matrices_results.txt";
 
     public static void main(String[] args) throws IOException {
         ThreadSafeQueue threadSafeQueue = new ThreadSafeQueue();
@@ -47,9 +47,9 @@ public class MatrixMultiplication {
 
         @Override
         public void run() {
-            while(true){
+            while (true) {
                 MatricesPair matricesPair = queue.remove();
-                if(matricesPair == null) {
+                if (matricesPair == null) {
                     System.out.println("No more matrices to read from the queue, consumer is terminating");
                     break;
                 }
@@ -92,10 +92,10 @@ public class MatrixMultiplication {
 
         @Override
         public void run() {
-            while (true){
+            while (true) {
                 float[][] matrix1 = readMatrix(),
                         matrix2 = readMatrix();
-                if(matrix1 == null || matrix2 == null){
+                if (matrix1 == null || matrix2 == null) {
                     queue.terminate();
                     System.out.println("No more matrices to read. Producer Thread is terminating.");
                     return;
@@ -110,10 +110,10 @@ public class MatrixMultiplication {
 
         public float[][] readMatrix() {
             float[][] matrix = new float[N][N];
-            for(int r = 0; r < N; r++){
-                if(!scanner.hasNext()) return null;
+            for (int r = 0; r < N; r++) {
+                if (!scanner.hasNext()) return null;
                 String[] line = scanner.nextLine().split(",");
-                for(int c = 0; c < N; c++){
+                for (int c = 0; c < N; c++) {
                     matrix[r][c] = Float.valueOf(line[c]);
                 }
             }
@@ -123,14 +123,14 @@ public class MatrixMultiplication {
 
     }
 
-    private static class ThreadSafeQueue{
+    private static class ThreadSafeQueue {
         private Queue<MatricesPair> queue = new LinkedList<>();
         private boolean isEmpty = true;
         private boolean isTerminate = false;
         private static final int CAPACITY = 5;
 
-        public synchronized void add(MatricesPair matricesPair){
-            while(queue.size() == CAPACITY){
+        public synchronized void add(MatricesPair matricesPair) {
+            while (queue.size() == CAPACITY) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
@@ -141,9 +141,9 @@ public class MatrixMultiplication {
             notify();
         }
 
-        public synchronized MatricesPair remove(){
+        public synchronized MatricesPair remove() {
             MatricesPair matricesPair = null;
-            while(isEmpty &&  !isTerminate){
+            while (isEmpty && !isTerminate) {
                 // consumer has nothing to consume at the moment
                 try {
                     wait();
@@ -151,24 +151,23 @@ public class MatrixMultiplication {
                     e.printStackTrace();
                 }
             }
-            if(queue.size() == 1) {
+            if (queue.size() == 1) {
                 isEmpty = true;
-            }
-            else if (queue.size() == 0 && isTerminate){
+            } else if (queue.size() == 0 && isTerminate) {
                 return null;
             }
 
             System.out.println("queue size: " + queue.size());
 
             matricesPair = queue.remove();
-            if(queue.size() == CAPACITY - 1){
+            if (queue.size() == CAPACITY - 1) {
                 notifyAll();
             }
 
             return matricesPair;
         }
 
-        public synchronized void terminate(){
+        public synchronized void terminate() {
             isTerminate = true;
             notifyAll(); // may have multiple consumer threads and in case of termination, want to wake them all up
         }
